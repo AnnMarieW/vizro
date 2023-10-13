@@ -94,11 +94,13 @@ class Dashboard(VizroBaseModel):
         for order, page in enumerate(self.pages):
             path = page.path if order else "/"
             dash.register_page(module=page.id, name=page.title, path=path, order=order, layout=page.build)
+        # print(dash.page_registry)
         self._create_error_page_404()
 
     @_log_call
     def build(self):
         for page in self.pages:
+            print("Page built:", page.id)
             page.build()  # TODO: ideally remove, but necessary to register slider callbacks
         self._update_theme()
 

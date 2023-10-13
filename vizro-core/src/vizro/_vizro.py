@@ -72,6 +72,7 @@ class Vizro:
         # Any models that are created during the pre-build process *will not* themselves have pre_build run on them.
         # In future may add a second pre_build loop after the first one.
         for model_id in set(model_manager):
+            print("Model pre_built",model_id)
             model = model_manager[model_id]
             if hasattr(model, "pre_build"):
                 model.pre_build()
