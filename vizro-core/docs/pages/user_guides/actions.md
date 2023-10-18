@@ -4,7 +4,7 @@ This guide shows you how to use `Actions`, a new concept in Vizro that is simila
 `actions` argument, where you can enter the [`Action`][vizro.models.Action] model.
 
 In a nutshell, using the [`Action`][vizro.models.Action] model together with an `action function` allows you to create complex functionality on a variety of triggers in your dashboard.
-There is already a range of re-usable `action functions` available.
+There is already a range of reusable `action functions` available.
 
 ???+ info "Overview of currently available pre-defined `action functions`"
 
@@ -161,6 +161,7 @@ Graph(figure=px.scatter(..., custom_data=["continent"]))
                             ),
                         ),
                     ],
+                    controls=[vm.Filter(column='continent')]
                 ),
             ]
         )
@@ -198,6 +199,9 @@ Graph(figure=px.scatter(..., custom_data=["continent"]))
                 x: gdpPercap
                 y: lifeExp
                 size: pop
+              controls:
+                - column: continent
+                  type: filter
             title: Filter interaction
         ```
     === "Result"

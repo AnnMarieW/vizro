@@ -38,6 +38,7 @@ currently available charts of the open source library [`plotly.express`](https:/
                     ),
                 ),
             ],
+            controls=[vm.Filter(column="species", selector=vm.Dropdown(title="Species"))],
         )
 
         dashboard = vm.Dashboard(pages=[page])
@@ -57,6 +58,12 @@ currently available charts of the open source library [`plotly.express`](https:/
               dimensions: ["sepal_length", "sepal_width", "petal_length", "petal_width"]
             id: my_chart
             type: graph
+          controls:
+            - column: continent
+              type: filter
+            - selector:
+                title: Species
+                type: dropdown
           title: My first page
         ```
     === "Result"
@@ -654,9 +661,9 @@ If you use the image URL hash `icon-top`, the image will be styled according to 
           title: Filters and parameters
         ```
     === "Result"
-           [![NavCard]][NavCard]
+           [![NavCardIcon]][NavCardIcon]
 
-       [NavCard]: ../../assets/user_guides/components/nav_card_icon.png
+       [NavCardIcon]: ../../assets/user_guides/components/nav_card_icon.png
 
 Note that in the above example the first [`Card`][vizro.models.Card] navigates to an existing [`Page`][vizro.models.Page]
 in the app with `path = filters-and-parameters` and the second one to an external link.
@@ -706,9 +713,7 @@ In the below example we show how to configure a button to export the filtered da
                     actions=[vm.Action(function=export_data(targets=["scatter_chart"]))],
                 ),
             ],
-            controls=[
-                vm.Filter(column="species")
-            ],
+            controls=[vm.Filter(column="species", selector=vm.Dropdown(title="Species"))],
         )
 
         dashboard = vm.Dashboard(pages=[page])
@@ -741,6 +746,7 @@ In the below example we show how to configure a button to export the filtered da
             controls:
               - column: species
                 selector:
+                  title: Species
                   type: dropdown
                 type: filter
             layout:
@@ -753,6 +759,21 @@ In the below example we show how to configure a button to export the filtered da
             title: My first page
         ```
     === "Result"
-        [![Card]][Card]
+        [![Button]][Button]
 
-    [Card]: ../../assets/user_guides/components/button.png
+    [Button]: ../../assets/user_guides/components/button.png
+
+The [`Button`][vizro.models.Button] component is currently reserved to be used inside the main panel (right-side) of the dashboard.
+However, there might be use cases where one would like to place the `Button` inside the control panel (left-side) with the other controls.
+
+In this case, simply follow the user-guide outlined for [custom components](custom_components.md) and manually add the `Button` as a valid type to the `controls` argument by running the following lines before your dashboard configurations:
+
+```python
+from vizro import Vizro
+import vizro.models as vm
+
+vm.Page.add_type("controls", vm.Button)
+
+# Add dashboard configurations below
+...
+```

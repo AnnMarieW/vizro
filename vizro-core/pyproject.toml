@@ -21,13 +21,13 @@ dependencies = [
   # 2.11 needed for https://dash.plotly.com/dash-in-jupyter
   "dash_bootstrap_components",
   "pandas",
-  "pydantic<2.0.0",  # must be synced with pre-commit mypy hook
+  "pydantic>=1.10.13, <2",  # must be synced with pre-commit mypy hook
   "dash_daq",
   "ipython>=8.10.0",  # not directly required, pinned by Snyk to avoid a vulnerability: https://app.snyk.io/vuln/SNYK-PYTHON-IPYTHON-3318382
   "numpy>=1.22.2",  # not directly required, pinned by Snyk to avoid a vulnerability: https://security.snyk.io/vuln/SNYK-PYTHON-NUMPY-2321970
   "tornado>=6.3.2",  # not directly required, pinned by Snyk to avoid a vulnerability: https://security.snyk.io/vuln/SNYK-PYTHON-TORNADO-5537286
   "setuptools>=65.5.1",  # not directly required, pinned by Snyk to avoid a vulnerability: https://security.snyk.io/vuln/SNYK-PYTHON-SETUPTOOLS-3180412
-  "MarkupSafe"  # required to sanitise user input
+  "MarkupSafe"  # required to sanitize user input
 ]
 description = "Vizro is a package to facilitate visual analytics."
 dynamic = ["version"]
@@ -46,3 +46,21 @@ kedro = [
 Documentation = "https://github.com/mckinsey/vizro#readme"
 Issues = "https://github.com/mckinsey/vizro/issues"
 Source = "https://github.com/mckinsey/vizro"
+
+[tool.coverage.paths]
+vizro = ["src/vizro"]  # omit tests for clarity, although this can be useful to see what test lines DID NOT run
+
+[tool.coverage.report]
+exclude_lines = [
+  "no cov",
+  "if __name__ == .__main__.:",
+  "if TYPE_CHECKING:"
+]
+fail_under = 92
+show_missing = true
+skip_covered = true
+
+[tool.coverage.run]
+branch = true
+parallel = true
+source_pkgs = ["vizro"]

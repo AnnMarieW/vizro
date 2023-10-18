@@ -68,8 +68,8 @@ class CapturedCallable:
 
     @property
     def _arguments(self):
-        # TODO: This is only used once in _get_parametrized_config and should be removed when that reference is
-        #  removed.
+        # TODO: This is used twice: in _get_parametrized_config and in vm.Action and should be removed when those
+        # references are removed.
         return self.__bound_arguments.arguments
 
     @classmethod
@@ -137,7 +137,7 @@ class CapturedCallable:
         else:
             raise ValueError(f"_target_={function_name} must be wrapped in the @capture decorator.")
 
-    # TODO-actions: Find the way how to compare CapturedCallable and function
+    # TODO-actions: Find a way how to compare CapturedCallable and function
     @property
     def _function(self):
         return self.__function

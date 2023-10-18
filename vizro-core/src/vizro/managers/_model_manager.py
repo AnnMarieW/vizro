@@ -29,10 +29,12 @@ class ModelManager:
 
     @_state_modifier
     def __setitem__(self, model_id: ModelID, model: Model):
-        # if model_id in self.__models:
-        #     raise DuplicateIDError(
-        #         f"Model with id={model_id} already exists. Models must have a unique id across the whole dashboard."
-        #     )
+        if model_id in self.__models:
+            raise DuplicateIDError(
+                f"Model with id={model_id} already exists. Models must have a unique id across the whole dashboard. "
+                f"If you are working from a Jupyter Notebook, please either restart the kernel, or "
+                f"use 'from vizro.managers import model_manager; model_manager._reset()`."
+            )
         self.__models[model_id] = model
 
     def __getitem__(self, model_id: ModelID) -> VizroBaseModel:
