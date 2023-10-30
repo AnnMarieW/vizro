@@ -154,7 +154,7 @@ class Page(VizroBaseModel):
     def _create_theme_switch():
         _, dashboard = next(model_manager._items_with_type(Dashboard))
         theme_switch = daq.BooleanSwitch(
-            id="theme_selector", on=True if dashboard.theme == "vizro_dark" else False, persistence=True
+            id="theme_selector", on=True if dashboard.theme == "vizro_dark" else False, persistence=True, className="theme_selector"
         )
         return theme_switch
 
@@ -188,52 +188,16 @@ class Page(VizroBaseModel):
         )
         return component_container
 
-    @staticmethod
-    def _arrange_containers(page_title, theme_switch, nav_panel, control_panel, component_container):
-        """Defines div container arrangement on page.
-
-        To change arrangement, one has to change the order in the header, left_side and/or right_side_elements.
-        """
-        _, dashboard = next(model_manager._items_with_type(Dashboard))
-        dashboard_title = (
-            html.Div(
-                children=[html.H2(dashboard.title), html.Hr()], className="dashboard_title", id="dashboard_title_outer"
-            )
-            if dashboard.title
-            else None
-        )
-
-        header_elements = [page_title, theme_switch]
-        left_side_elements = [dashboard_title, nav_panel, control_panel]
-        header = html.Div(children=header_elements, className="header", id="header_outer")
-        left_side = (
-            html.Div(children=left_side_elements, className="left_side", id="left_side_outer")
-            if any(left_side_elements)
-            else None
-        )
-        right_side_elements = [header, component_container]
-        right_side = html.Div(children=right_side_elements, className="right_side", id="right_side_outer")
-        return left_side, right_side
-
     def _make_page_layout(self, controls_content, components_content):
         # Create dashboard containers/elements
-        page_title = html.H2(children=self.title)
+        page_title = html.H2(children=self.title, className="page-title")
         theme_switch = self._create_theme_switch()
         nav_panel = self._create_nav_panel()
         control_panel = self._create_control_panel(controls_content)
         component_container = self._create_component_container(components_content)
 
-        # Arrange dashboard containers
-        left_side, right_side = self._arrange_containers(
-            page_title=page_title,
-            theme_switch=theme_switch,
-            nav_panel=nav_panel,
-            control_panel=control_panel,
-            component_container=component_container,
-        )
-
         return dbc.Container(
             id=self.id,
-            children=[dcc.Store(id=f"{ON_PAGE_LOAD_ACTION_PREFIX}_trigger_{self.id}"), left_side, right_side],
+            children=[dcc.Store(id=f"{ON_PAGE_LOAD_ACTION_PREFIX}_trigger_{self.id}"), page_title, theme_switch, nav_panel, control_panel, component_container],
             className="page_container",
         )

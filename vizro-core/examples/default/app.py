@@ -530,6 +530,7 @@ dashboard = vm.Dashboard(
             "Summary": ["Continent Summary"],
         }
     ),
+    title="Dashboard"
 )
 
 if __name__ == "__main__":

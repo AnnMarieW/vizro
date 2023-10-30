@@ -103,10 +103,19 @@ class Dashboard(VizroBaseModel):
             page.build()  # TODO: ideally remove, but necessary to register slider callbacks
         self._update_theme()
 
+        dashboard_title = (
+            html.Div(
+                children=[html.H2(self.title), html.Hr()], className="dashboard_title", id="dashboard_title_outer"
+            )
+            if self.title
+            else None
+        )
+
         return dbc.Container(
             id="dashboard_container_outer",
             children=[
-                html.Div(id=f"vizro_version_{vizro.__version__}"),
+                dashboard_title,
+                html.Div(id=f"vizro_version_{vizro.__version__}", className="hidden"),
                 ActionLoop._create_app_callbacks(),
                 dash.page_container,
             ],

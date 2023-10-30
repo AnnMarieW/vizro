@@ -4,3 +4,35 @@ img[src*="#my-image"] {
   float: left;
   margin: 10px 25px;
 }
+
+.page-title {
+  grid-area: pagetitle;
+}
+
+.nav_panel {
+  grid-area: navpanel;
+}
+
+.dashboard_title_outer {
+  grid-area: dashboardtitle;
+}
+
+.control_panel {
+  grid-area: controls;
+}
+
+.component_container {
+  grid-area: components;
+}
+
+.theme_selector {
+  grid-area: themeselector;
+}
+
+
+#dashboard_container_outer {
+  display: grid;
+  grid-template-areas: "dashboardtitle pagetitle themeselector"
+                       "navpanel components components"
+                       "controls components components"
+}
