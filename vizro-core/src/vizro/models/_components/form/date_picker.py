@@ -10,6 +10,7 @@ except ImportError:  # pragma: no cov
 
 
 from datetime import date
+from dash import clientside_callback, dcc, ClientsideFunction, Input, Output, State
 
 import dash_bootstrap_components as dbc
 
@@ -56,6 +57,21 @@ class DatePicker(VizroBaseModel):
     def build(self):
         init_value = self.value or ([self.min, self.max] if self.range else self.min)  # type: ignore[list-item]
 
+        output = [
+            Output(self.id, "value"),
+            Output(f"{self.id}_input_store", "data"),
+        ]
+        inputs = [
+            Input(self.id, "value"),
+            State(f"{self.id}_input_store", "data"),
+        ]
+
+        clientside_callback(
+            ClientsideFunction(namespace="date_picker", function_name="update_date_picker_values"),
+            output=output,
+            inputs=inputs,
+        )
+
         date_picker = dmc.DatePickerInput(
             id=self.id,
             minDate=self.min,
@@ -64,7 +80,7 @@ class DatePicker(VizroBaseModel):
             persistence=True,
             persistence_type="session",
             type="range" if self.range else "default",
-            allowSingleDateInRange= True,
+            allowSingleDateInRange=True,
             className="datepicker",
             # removes the default red color for  weekend days
             styles={"day": {"color": "var(--mantine-color-text"}},
@@ -74,5 +90,6 @@ class DatePicker(VizroBaseModel):
             children=[
                 dbc.Label(children=self.title, html_for=self.id) if self.title else None,
                 date_picker,
+                dcc.Store(id=f"{self.id}_input_store", storage_type="session", data=init_value),
             ],
         )
