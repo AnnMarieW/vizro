@@ -64,10 +64,9 @@ class DatePicker(VizroBaseModel):
             persistence=True,
             persistence_type="session",
             type="range" if self.range else "default",
-            allowSingleDateInRange= True,
-            className="datepicker",
-            # removes the default red color for  weekend days
-            styles={"day": {"color": "var(--mantine-color-text"}},
+            allowSingleDateInRange=True,
+            # Required for styling to remove gaps between cells
+            withCellSpacing=False,
         )
 
         return html.Div(
